@@ -1,5 +1,4 @@
 import json, os, requests
-from re import search
 from fpdf import FPDF
 from collections import Counter, OrderedDict
 import functools, operator, itertools
@@ -176,30 +175,32 @@ for file in os.listdir(path+"logs"):
         pdf.cell(40, 8, "9  . Les rentrées d'argent Staff", ln=1, link=page_argent)
         page_hdv = pdf.add_link()
         pdf.cell(40, 8, "10  . Les achats & ventes HDV", ln=1, link=page_hdv)
+        page_chestshop = pdf.add_link()
+        pdf.cell(40, 8, "11  . Les chest Shop", ln=1, link=page_chestshop)
         page_staff = pdf.add_link()
-        pdf.cell(40, 8, "11  . Les commandes staff utilisées", ln=1, link=page_staff)
+        pdf.cell(40, 8, "12  . Les commandes staff utilisées", ln=1, link=page_staff)
         page_tracteur = pdf.add_link()
-        pdf.cell(40, 8, "12  . Les informations sur les tracteurs", ln=1, link=page_tracteur)
+        pdf.cell(40, 8, "13  . Les informations sur les tracteurs", ln=1, link=page_tracteur)
         page_colonie = pdf.add_link()
-        pdf.cell(40, 8, "13 . Les informations sur les colonies", ln=1, link=page_colonie)
+        pdf.cell(40, 8, "14 . Les informations sur les colonies", ln=1, link=page_colonie)
         page_entreprise = pdf.add_link()
-        pdf.cell(40, 8, "14 . Les informations sur les entreprises", ln=1, link=page_entreprise)
+        pdf.cell(40, 8, "15 . Les informations sur les entreprises", ln=1, link=page_entreprise)
         page_prime = pdf.add_link()
-        pdf.cell(40, 8, "15 . Les primes des entreprise", ln=1, link=page_prime)
+        pdf.cell(40, 8, "16 . Les primes des entreprise", ln=1, link=page_prime)
         page_powerboost = pdf.add_link()
-        pdf.cell(40, 8, "16 . Le Power Boost", ln=1, link=page_powerboost)
+        pdf.cell(40, 8, "17 . Le Power Boost", ln=1, link=page_powerboost)
         page_enchere = pdf.add_link()
-        pdf.cell(40, 8, "17 . Les enchères", ln=1, link=page_enchere)
+        pdf.cell(40, 8, "18 . Les enchères", ln=1, link=page_enchere)
         page_deaths = pdf.add_link()
-        pdf.cell(40, 8, "18 . Les Morts", ln=1, link=page_deaths)
+        pdf.cell(40, 8, "19 . Les Morts", ln=1, link=page_deaths)
         page_duel = pdf.add_link()
-        pdf.cell(40, 8, "19 . Les Duels", ln=1, link=page_duel)
+        pdf.cell(40, 8, "20 . Les Duels", ln=1, link=page_duel)
         page_obscur = pdf.add_link()
-        pdf.cell(40, 8, "20 . Les minerais obscurs", ln=1, link=page_obscur)
+        pdf.cell(40, 8, "21 . Les minerais obscurs", ln=1, link=page_obscur)
         page_access = pdf.add_link()
-        pdf.cell(40, 8, "21 . Les access pays", ln=1, link=page_access)
+        pdf.cell(40, 8, "22 . Les access pays", ln=1, link=page_access)
         page_meteore = pdf.add_link()
-        pdf.cell(40, 8, "22 . Les météores", ln=1, link=page_meteore)
+        pdf.cell(40, 8, "23 . Les météores", ln=1, link=page_meteore)
 
         with open(path+"logs/" + file, "r", encoding='utf-8') as f:
             lines = f.readlines()
@@ -378,7 +379,6 @@ for file in os.listdir(path+"logs"):
             elif "vient de recevoir une bourse" in line:
                 sto = line.split()
                 notation.append([sto[6], sto[-2]])
-                print(sto[-2])
                 notation_global += int(float(sto[-2]))
 
             elif "vient de percevoir" in line:
@@ -1757,6 +1757,23 @@ for file in os.listdir(path+"logs"):
             count += 1
         # ==================HDV==========================
 
+        # ==================chestshop==========================
+        pdf.add_page()
+        pdf.set_link(page_chestshop)
+        pdf.set_font("Arial", size=12)
+        pdf.cell(40, 5, "==================", ln=1)
+        pdf.cell(40, 5, "Création de ChestShop", ln=1)
+        pdf.cell(40, 5, "==================", ln=1)
+
+        for line in chestshop:
+            string = ' '.join(line)
+            if "created" in string:
+                pdf.set_font("Arial", size=9)
+            else:
+                pdf.set_font("Arial", size=6)
+            pdf.cell(40, 5, txt=string, ln=1)
+        # ==================chestshop==========================
+
         # ==================Catégorie staff==========================
         pdf.add_page()
         pdf.set_link(page_staff)
@@ -2705,3 +2722,5 @@ for file in os.listdir(path+"logs"):
             count += 1
 
         pdf.output(path+"/pdf/red-"+os.path.basename(file).split('.')[0]+".pdf","F")
+    print(file+" converti !")
+print("Fin du programme")
